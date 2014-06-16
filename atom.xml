@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://tushargosavi.github.io/atom.xml" rel="self"/>
+  <link href="http://tushargosavi.github.io/"/>
+  <updated>2014-06-16T12:21:10+05:30</updated>
+  <id>http://tushargosavi.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[BST in Haskell]]></title>
+    <link href="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/"/>
+    <updated>2014-06-16T11:57:33+05:30</updated>
+    <id>http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell</id>
+    <content type="html"><![CDATA[<p>I have just started to learn Haskell from various sources, such as <a href="http://learnyouahaskell.com/">Lean You Haskell</a> and
+<a href="http://book.realworldhas">Real World Haskell</a>. After reading few chapters this is my first attempt to code a
+Binary Search Tree in haskell, supporting add, search and delete operation.</p>
+
+<div>
+  <pre><code class='haskell'>data Tree a = Node a (Tree a) (Tree a)
+      | Nil
+      deriving(Show, Eq)</code></pre>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>
