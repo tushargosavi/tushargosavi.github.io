@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>BST in Haskell - My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>BST in Haskell - Tushar Gosavi Blogs</title>
+  <meta name="author" content="Tushar R. Gosavi">
 
   
-  <meta name="description" content="I have just started to learn Haskell from various sources, such as Lean You Haskell and
-Real World Haskell. After reading few chapters this is my &hellip;">
+  <meta name="description" content="I have just started to learn Haskell from various sources, such as
+Lean You Haskell and Real World Haskell. After reading
+few chapters, this is my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,24 +23,36 @@ Real World Haskell. After reading few chapters this is my &hellip;">
   <link rel="canonical" href="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Tushar Gosavi Blogs" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-52021913-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
-<body   >
+<body   class="collapse-sidebar sidebar-footer" >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">Tushar Gosavi Blogs</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
+    <h2>My blog for programing related stuff.</h2>
   
 </hgroup>
 
@@ -48,6 +61,13 @@ Real World Haskell. After reading few chapters this is my &hellip;">
   <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
+  
+  
+<ul class="subscription">
+  <li><a href="https://plus.google.com/tushargosavi" rel="website-gplus" title="Google+ Profile">Google+</a></li>
+</ul>
+  
+  
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
@@ -92,18 +112,303 @@ Real World Haskell. After reading few chapters this is my &hellip;">
   </header>
 
 
-<div class="entry-content"><p>I have just started to learn Haskell from various sources, such as <a href="http://learnyouahaskell.com/">Lean You Haskell</a> and
-<a href="http://book.realworldhas">Real World Haskell</a>. After reading few chapters this is my first attempt to code a
-Binary Search Tree in haskell, supporting add, search and delete operation.</p>
+<div class="entry-content"><p>I have just started to learn Haskell from various sources, such as
+<a href="http://learnyouahaskell.com/">Lean You Haskell</a> and <a href="http://book.realworldhas">Real World Haskell</a>. After reading
+few chapters, this is my first attempt to code a <a href="http://en.wikipedia.org/wiki/Binary_search_tree">Binary Search Tree</a> in
+Haskell, supporting add, search and traverse operation.</p>
 
-<div>
-  <pre><code class='haskell'>data Tree a = Node a (Tree a) (Tree a)
-      | Nil
-      deriving(Show, Eq)</code></pre>
-</div>
+<p>A node is Binary Search Tree contains a comparable key and left and
+right subtrees, which can be empty. The left tree contains
+smaller keys and right tree contains bigger keys that the node&rsquo;s key.</p>
+
+<p>The Tree is recursively defined as a Nil tree i.e a empty tree, or a Node with key, left and right subtrees. This recursive
+data definition is specified in Haskell easily using abstract data type as follows.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">a</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">|</span> <span class="kt">Nil</span>
+</span><span class='line'>      <span class="kr">deriving</span><span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<h2>Insert</h2>
 
+<p>To add a key in a BST is easy, if tree is empty, then after adding
+one key is equivalent of creating a new Node with left and right tree
+set to Nil, and data set to the key.</p>
+
+<p>If new key is smaller than current node&rsquo;s key then add a key to the left
+tree, else add the key to right tree.</p>
+
+<p>The following function implements the insert method which takes a Tree
+and key to be added to the tree. If key is already present in the Tree
+then this function returns the same Tree, else returns a new Tree with
+key added. As Haskell is purely functional language, we can not modify
+original tree, instead it creates a new tree every time a key is added
+to the tree.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="cm">{-</span>
+</span><span class='line'><span class="cm">Add a node to Tree, If element already present in the Tree,</span>
+</span><span class='line'><span class="cm">then it is ignored.</span>
+</span><span class='line'><span class="cm">-}</span>
+</span><span class='line'><span class="nf">insert</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+</span><span class='line'><span class="nf">insert</span> <span class="kt">Nil</span> <span class="n">elem</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">elem</span> <span class="kt">Nil</span> <span class="kt">Nil</span>
+</span><span class='line'><span class="nf">insert</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="n">elem</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="p">(</span><span class="n">add</span> <span class="n">left</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="p">(</span><span class="n">add</span> <span class="n">right</span> <span class="n">elem</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we want to add bunch of keys to the Tree, then built in fold
+function can be used, A one line function to add list of keys to
+the Tree is</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">list2Tree</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="n">add</span> <span class="kt">Nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s try these functions in ghci session.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">a</span> <span class="ow">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">85</span><span class="p">]</span>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">tree</span> <span class="ow">=</span> <span class="n">list2Tree</span> <span class="n">a</span>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">tree</span>
+</span><span class='line'><span class="kt">Node</span> <span class="mi">30</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">10</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">4</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">8</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">))</span> <span class="kt">Nil</span><span class="p">)</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">45</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">69</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">85</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Inserting a new node</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">tree</span>
+</span><span class='line'><span class="kt">Node</span> <span class="mi">30</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">10</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">4</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">8</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">))</span> <span class="kt">Nil</span><span class="p">)</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">45</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">69</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">85</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">)))</span>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">newtree</span> <span class="ow">=</span>  <span class="n">insert</span> <span class="n">tree</span> <span class="mi">35</span>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">newtree</span>
+</span><span class='line'><span class="kt">Node</span> <span class="mi">30</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">10</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">4</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">8</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">))</span> <span class="kt">Nil</span><span class="p">)</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">45</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">35</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">)</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">69</span> <span class="kt">Nil</span> <span class="p">(</span><span class="kt">Node</span> <span class="mi">85</span> <span class="kt">Nil</span> <span class="kt">Nil</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Search</h2>
+
+<p>Searching in binary tree starts at the root node and then recursively
+follow left or right branch until we reach at empty tree (Nil) or
+search key is found. The function is split into two cases.</p>
+
+<ul>
+<li>If current root is Nil then we have reached at the leaf node, and element
+does not exists in the tree, so we return false. (line 3)</li>
+<li>If current root is not Nil and key matches then element present in the tree,
+else we recursively call search with left or right node depending on value of
+key. (line 5,6,7)</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="cm">{- Search a tree -}</span>
+</span><span class='line'><span class="nf">search</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+</span><span class='line'><span class="nf">search</span> <span class="kt">Nil</span> <span class="kr">_</span> <span class="ow">=</span> <span class="kt">False</span>
+</span><span class='line'><span class="nf">search</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">elem</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="n">a</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">True</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">a</span>  <span class="ow">=</span> <span class="n">search</span> <span class="n">left</span> <span class="n">a</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">search</span> <span class="n">right</span> <span class="n">a</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets try out search on some of the keys.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">search</span> <span class="n">newtree</span> <span class="mi">85</span>
+</span><span class='line'><span class="kt">True</span>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">search</span> <span class="n">newtree</span> <span class="mi">80</span>
+</span><span class='line'><span class="kt">False</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Traversing elements in the tree.</h2>
+
+<p>Apart from Breath first and depth first traversal, binary tree can be
+traverse in pre-order, post-order and in-order traversal. In order
+traversal visit elements in the sorted order. Following is the
+implementation in Haskell which returns a list of element in order
+they are visited in the traversal.</p>
+
+<ul>
+<li>Pre-order
+
+<ul>
+<li>Visit the root.</li>
+<li>Traverse the left subtree.</li>
+<li>Traverse the right subtree.</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="cm">{- Pr-eorder tree traversal -}</span>
+</span><span class='line'><span class="nf">preOrder</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</span><span class='line'><span class="nf">preOrder</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">[]</span>
+</span><span class='line'><span class="nf">preOrder</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span>
+</span><span class='line'>  <span class="n">a</span> <span class="kt">:</span> <span class="n">preOrder</span> <span class="n">left</span> <span class="o">++</span> <span class="n">preOrder</span> <span class="n">right</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>In-order (symmetric)
+
+<ul>
+<li>Traverse the left subtree.</li>
+<li>Visit the root.</li>
+<li>Traverse the right subtree.</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="cm">{- In-order tree traversal -}</span>
+</span><span class='line'><span class="nf">inOrder</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</span><span class='line'><span class="nf">inOrder</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">[]</span>
+</span><span class='line'><span class="nf">inOrder</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span>
+</span><span class='line'>  <span class="n">inOrder</span> <span class="n">left</span> <span class="o">++</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">++</span> <span class="n">inOrder</span> <span class="n">right</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Post-order
+
+<ul>
+<li>Traverse the left subtree.</li>
+<li>Traverse the right subtree.</li>
+<li>Visit the root.</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="cm">{- Post-order tree traversal -}</span>
+</span><span class='line'><span class="nf">postOrder</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</span><span class='line'><span class="nf">postOrder</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">[]</span>
+</span><span class='line'><span class="nf">postOrder</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span>
+</span><span class='line'>  <span class="n">postOrder</span> <span class="n">left</span> <span class="o">++</span> <span class="n">postOrder</span> <span class="n">right</span> <span class="o">++</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets try these functions, see that in-order traversal of BST gives
+element in sorted order.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">preOrder</span> <span class="n">newtree</span>
+</span><span class='line'><span class="p">[</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">85</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">postOrder</span> <span class="n">newtree</span>
+</span><span class='line'><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">inOrder</span> <span class="n">newtree</span>
+</span><span class='line'><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">85</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Find Max and Min</h2>
+
+<p>The maximum element is the right most element in the tree, i.e keep following
+right branch until node&rsquo;s right branch is Nil. That node has the maximum value
+of the key.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">maxElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+</span><span class='line'><span class="nf">maxElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">elm</span> <span class="kr">_</span> <span class="kt">Nil</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">elm</span>
+</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kr">_</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maxElem</span> <span class="n">left</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Similarly the minimum element is found by following left branch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">minElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+</span><span class='line'><span class="nf">minElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kt">Nil</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">a</span>
+</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr">_</span> <span class="n">right</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">minElem</span> <span class="n">right</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s try this out in ghci.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">minElem</span> <span class="n">newtree</span>
+</span><span class='line'><span class="kt">Just</span> <span class="mi">4</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">maxElem</span> <span class="n">newtree</span>
+</span><span class='line'><span class="kt">Just</span> <span class="mi">85</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it for now, In this post we have implemented a simple binary tree supporting basic operations except delete for which I am planing
+to write a separate post. Haskell language is very concise, and because of pattern matching and good support for writing recursive functions
+, most of the recursive algorithms on binary tree are translated directly into Haskell without much effort.</p>
+
+<p>The code for binary search tree is available on <a href="https://github.com/tushargosavi/haskell-learn/blob/master/btree.hs">Github</a></p>
 </div>
 
 
@@ -112,7 +417,7 @@ Binary Search Tree in haskell, supporting add, search and delete operation.</p>
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+<span class="byline author vcard">Authored by <span class="fn">Tushar R. Gosavi</span></span>
 
       
 
@@ -140,9 +445,11 @@ Binary Search Tree in haskell, supporting add, search and delete operation.</p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/" data-via="" data-counturl="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/" data-via="tushargosavi" data-counturl="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/" >Tweet</a>
   
   
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
   
 </div>
 
@@ -154,22 +461,40 @@ Binary Search Tree in haskell, supporting add, search and delete operation.</p>
   </footer>
 </article>
 
+
 </div>
 
 <aside class="sidebar">
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
     
-      <li class="post">
-        <a href="/blog/2014/06/16/bst-in-haskell/">BST in Haskell</a>
-      </li>
-    
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
   </ul>
+  
+  <a href="https://github.com/tushargosavi">@tushargosavi</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tushargosavi',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
-
-
 
 
 
@@ -180,8 +505,8 @@ Binary Search Tree in haskell, supporting add, search and delete operation.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Your Name -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  Copyright &copy; 2014 - Tushar R. Gosavi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
 </p>
 
 </footer>
@@ -192,13 +517,25 @@ Binary Search Tree in haskell, supporting add, search and delete operation.</p>
 
 
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
 
   <script type="text/javascript">
     (function(){
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

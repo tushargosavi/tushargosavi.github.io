@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: 
+Disallow:
 
-Sitemap: http://tushargosavi.github.io/sitemap.xml 
+Sitemap: http://tushargosavi.github.io/sitemap.xml
