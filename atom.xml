@@ -4,7 +4,7 @@
   <title><![CDATA[Tushar Gosavi Blogs]]></title>
   <link href="http://tushargosavi.github.io/atom.xml" rel="self"/>
   <link href="http://tushargosavi.github.io/"/>
-  <updated>2014-06-21T21:14:48+05:30</updated>
+  <updated>2014-06-22T12:29:32+05:30</updated>
   <id>http://tushargosavi.github.io/</id>
   <author>
     <name><![CDATA[Tushar R. Gosavi]]></name>
@@ -72,8 +72,8 @@ to the tree.</p>
 </span><span class='line'><span class="nf">insert</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">insert</span> <span class="kt">Nil</span> <span class="n">elem</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">elem</span> <span class="kt">Nil</span> <span class="kt">Nil</span>
 </span><span class='line'><span class="nf">insert</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="n">elem</span>
-</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="p">(</span><span class="n">add</span> <span class="n">left</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span>
-</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="p">(</span><span class="n">add</span> <span class="n">right</span> <span class="n">elem</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="p">(</span><span class="n">insert</span> <span class="n">left</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="p">(</span><span class="n">insert</span> <span class="n">right</span> <span class="n">elem</span><span class="p">)</span>
 </span><span class='line'>  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -83,7 +83,7 @@ function can be used, A one line function to add list of keys to
 the Tree is</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">list2Tree</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="n">add</span> <span class="kt">Nil</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">list2Tree</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="n">insert</span> <span class="kt">Nil</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -162,8 +162,8 @@ key. (line 5,6,7)</li>
 
 <h2>Traversing elements in the tree.</h2>
 
-<p>Apart from Breath first and depth first traversal, binary tree can be
-traverse in pre-order, post-order and in-order traversal. In order
+<p>Apart from breath first and depth first traversal, binary tree can be
+traverse in pre-order, post-order and in-order traversal. The in-order
 traversal visit elements in the sorted order. Following is the
 implementation in Haskell which returns a list of element in order
 they are visited in the traversal.</p>
@@ -278,7 +278,7 @@ of the key.</p>
 </pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">maxElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">maxElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
 </span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">elm</span> <span class="kr">_</span> <span class="kt">Nil</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">elm</span>
-</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kr">_</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maxElem</span> <span class="n">left</span>
+</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kr">_</span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maxElem</span> <span class="n">right</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -291,7 +291,7 @@ of the key.</p>
 </pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">minElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">minElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
 </span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kt">Nil</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">a</span>
-</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr">_</span> <span class="n">right</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">minElem</span> <span class="n">right</span>
+</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr">_</span> <span class="n">left</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">minElem</span> <span class="n">left</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

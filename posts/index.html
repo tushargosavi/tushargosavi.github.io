@@ -172,8 +172,8 @@ to the tree.</p>
 </span><span class='line'><span class="nf">insert</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">&ndash;&gt;</span> <span class="n">a</span> <span class="ow">&ndash;&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">insert</span> <span class="kt">Nil</span> <span class="n">elem</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">elem</span> <span class="kt">Nil</span> <span class="kt">Nil</span>
 </span><span class='line'><span class="nf">insert</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span><span class="p">)</span> <span class="n">elem</span>
-</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="p">(</span><span class="n">add</span> <span class="n">left</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span>
-</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="p">(</span><span class="n">add</span> <span class="n">right</span> <span class="n">elem</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="p">(</span><span class="n">insert</span> <span class="n">left</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span>
+</span><span class='line'>  <span class="o">|</span> <span class="n">elem</span> <span class="o">&gt;</span> <span class="n">val</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="p">(</span><span class="n">insert</span> <span class="n">right</span> <span class="n">elem</span><span class="p">)</span>
 </span><span class='line'>  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">Node</span> <span class="n">val</span> <span class="n">left</span> <span class="n">right</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
@@ -183,7 +183,7 @@ the Tree is</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">list2Tree</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="n">add</span> <span class="kt">Nil</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">list2Tree</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="n">insert</span> <span class="kt">Nil</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Let&rsquo;s try these functions in ghci session.</p>
@@ -269,8 +269,8 @@ key. (line 5,6,7)</li>
 
 
 
-<p>Apart from Breath first and depth first traversal, binary tree can be
-traverse in pre-order, post-order and in-order traversal. In order
+<p>Apart from breath first and depth first traversal, binary tree can be
+traverse in pre-order, post-order and in-order traversal. The in-order
 traversal visit elements in the sorted order. Following is the
 implementation in Haskell which returns a list of element in order
 they are visited in the traversal.</p>
@@ -389,7 +389,7 @@ of the key.</p>
 </pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">maxElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">&ndash;&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">maxElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
 </span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">elm</span> <span class="kr"><em></span> <span class="kt">Nil</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">elm</span>
-</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kr"></em></span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maxElem</span> <span class="n">left</span>
+</span><span class='line'><span class="nf">maxElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kr"></em></span> <span class="n">right</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maxElem</span> <span class="n">right</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Similarly the minimum element is found by following left branch.</p>
@@ -402,7 +402,7 @@ of the key.</p>
 </pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">minElem</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">&ndash;&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
 </span><span class='line'><span class="nf">minElem</span> <span class="kt">Nil</span> <span class="ow">=</span> <span class="kt">Nothing</span>
 </span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">a</span> <span class="kt">Nil</span> <span class="kr"><em></span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">a</span>
-</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr"></em></span> <span class="n">right</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">minElem</span> <span class="n">right</span>
+</span><span class='line'><span class="nf">minElem</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr"></em></span> <span class="n">left</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">minElem</span> <span class="n">left</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Let&rsquo;s try this out in ghci.</p>

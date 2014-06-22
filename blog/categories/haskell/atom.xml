@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Tushar Gosavi Blogs]]></title>
   <link href="http://tushargosavi.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://tushargosavi.github.io/"/>
-  <updated>2014-06-21T21:14:48+05:30</updated>
+  <updated>2014-06-22T12:29:32+05:30</updated>
   <id>http://tushargosavi.github.io/</id>
   <author>
     <name><![CDATA[Tushar R. Gosavi]]></name>
@@ -63,8 +63,8 @@ then it is ignored.
 insert :: (Ord a) =&gt; Tree a -&gt; a -&gt; Tree a
 insert Nil elem = Node elem Nil Nil
 insert (Node val left right) elem
-  | elem &lt; val = Node val (add left elem) right
-  | elem &gt; val = Node val left (add right elem)
+  | elem &lt; val = Node val (insert left elem) right
+  | elem &gt; val = Node val left (insert right elem)
   | otherwise = Node val left right
 </code></p>
 
@@ -73,7 +73,7 @@ function can be used, A one line function to add list of keys to
 the Tree is</p>
 
 <p><code>haskell
-list2Tree = foldl add Nil
+list2Tree = foldl insert Nil
 </code></p>
 
 <p>Let&rsquo;s try these functions in ghci session.</p>
@@ -129,8 +129,8 @@ False
 
 <h2>Traversing elements in the tree.</h2>
 
-<p>Apart from Breath first and depth first traversal, binary tree can be
-traverse in pre-order, post-order and in-order traversal. In order
+<p>Apart from breath first and depth first traversal, binary tree can be
+traverse in pre-order, post-order and in-order traversal. The in-order
 traversal visit elements in the sorted order. Following is the
 implementation in Haskell which returns a list of element in order
 they are visited in the traversal.</p>
@@ -218,7 +218,7 @@ of the key.</p>
 maxElem :: Tree a -&gt; Maybe a
 maxElem Nil = Nothing
 maxElem (Node elm _ Nil) = Just elm
-maxElem (Node a _ right) = maxElem left
+maxElem (Node a _ right) = maxElem right
 </code></p>
 
 <p>Similarly the minimum element is found by following left branch.</p>
@@ -227,7 +227,7 @@ maxElem (Node a _ right) = maxElem left
 minElem :: Tree a -&gt; Maybe a
 minElem Nil = Nothing
 minElem (Node a Nil _) = Just a
-minElem (Node _ right _) = minElem right
+minElem (Node _ left _) = minElem left
 </code></p>
 
 <p>Let&rsquo;s try this out in ghci.
