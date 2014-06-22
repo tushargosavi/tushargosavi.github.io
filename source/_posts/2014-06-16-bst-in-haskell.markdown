@@ -48,8 +48,8 @@ then it is ignored.
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Nil elem = Node elem Nil Nil
 insert (Node val left right) elem
-  | elem < val = Node val (add left elem) right
-  | elem > val = Node val left (add right elem)
+  | elem < val = Node val (insert left elem) right
+  | elem > val = Node val left (insert right elem)
   | otherwise = Node val left right
 ```
 
@@ -58,7 +58,7 @@ function can be used, A one line function to add list of keys to
 the Tree is
 
 ```haskell
-list2Tree = foldl add Nil
+list2Tree = foldl insert Nil
 ```
 
 Let's try these functions in ghci session.
@@ -112,8 +112,8 @@ False
 
 ## Traversing elements in the tree.
 
-Apart from Breath first and depth first traversal, binary tree can be
-traverse in pre-order, post-order and in-order traversal. In order
+Apart from breath first and depth first traversal, binary tree can be
+traverse in pre-order, post-order and in-order traversal. The in-order
 traversal visit elements in the sorted order. Following is the
 implementation in Haskell which returns a list of element in order
 they are visited in the traversal.
@@ -163,7 +163,7 @@ element in sorted order.
 ```
 *Main> preOrder newtree
 [30,10,4,8,45,35,69,85]
-
+  
 *Main> postOrder newtree
 [8,4,10,35,85,69,45,30]
 
@@ -182,7 +182,7 @@ of the key.
 maxElem :: Tree a -> Maybe a
 maxElem Nil = Nothing
 maxElem (Node elm _ Nil) = Just elm
-maxElem (Node a _ right) = maxElem left
+maxElem (Node a _ right) = maxElem right
 ```
 
 Similarly the minimum element is found by following left branch.
@@ -191,7 +191,7 @@ Similarly the minimum element is found by following left branch.
 minElem :: Tree a -> Maybe a
 minElem Nil = Nothing
 minElem (Node a Nil _) = Just a
-minElem (Node _ right _) = minElem right
+minElem (Node _ left _) = minElem left
 ```
 
 Let's try this out in ghci.
