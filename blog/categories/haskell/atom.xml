@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: haskell | Tushar Gosavi Blogs]]></title>
-  <link href="http://tushargosavi.github.io/blog/categories/haskell/atom.xml" rel="self"/>
-  <link href="http://tushargosavi.github.io/"/>
-  <updated>2014-06-22T12:29:32+05:30</updated>
-  <id>http://tushargosavi.github.io/</id>
+  <link href="http://blog.tushargosavi.in/blog/categories/haskell/atom.xml" rel="self"/>
+  <link href="http://blog.tushargosavi.in/"/>
+  <updated>2014-06-24T09:24:28+05:30</updated>
+  <id>http://blog.tushargosavi.in/</id>
   <author>
     <name><![CDATA[Tushar R. Gosavi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[BST in Haskell]]></title>
-    <link href="http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell/"/>
+    <link href="http://blog.tushargosavi.in/blog/2014/06/16/bst-in-haskell/"/>
     <updated>2014-06-16T11:57:33+05:30</updated>
-    <id>http://tushargosavi.github.io/blog/2014/06/16/bst-in-haskell</id>
+    <id>http://blog.tushargosavi.in/blog/2014/06/16/bst-in-haskell</id>
     <content type="html"><![CDATA[<p>I have just started to learn Haskell from various sources, such as
 <a href="http://learnyouahaskell.com/">Lean You Haskell</a> and <a href="http://book.realworldhas">Real World Haskell</a>. After reading
 few chapters, this is my first attempt to code a <a href="http://en.wikipedia.org/wiki/Binary_search_tree">Binary Search Tree</a> in
